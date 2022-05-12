@@ -1,21 +1,40 @@
 .container {
-    width: 100%;
-    height: 100%;
-    align-content: center;
+    width: 100vw;
+    height: 100%vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+   
+}
+
+.header {
+    padding: 0px;
+    align-content: flex-start;
+}
+
+.header ul {
+    display: flex;
+    list-style: none;
+    gap: 80%;
+}
+
+.header li {
+    min-width: 25px;
 }
 
 .titleStyle {
+    display:flex;
     align-items: center;
+
+}
+
+.quizStyle {
+    display: flex;
+    align-content: center;
+    max-width: 900px;
     padding: 5px;
     border: 2px;
     border-style: solid;
 }
 
-.quizStyle {
-    align-content: center;
-    width: 50%;
-    height:300px;
-    padding: 5px;
-    border: 2px;
-    border-style: solid;
-}
