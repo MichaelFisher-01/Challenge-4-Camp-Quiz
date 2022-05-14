@@ -8,6 +8,15 @@
    
 }
 
+.container button {
+    background-color: purple;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    color: white;
+    margin: 5px;
+}
+
 .header {
     padding: 0px;
     align-content: flex-start;
@@ -31,16 +40,16 @@
 
 .textStyle {
     display: flex;
+    flex-direction: column;
     align-content: center;
+    align-items: center;
     text-align: center;
     max-width: 435px;
     padding: 0px;
 }
 
-.btnStyle {
-    display: flex;
-    flex-direction: column;
-    color: purple;
-    padding: 3px;
+.textStyle button {
+    max-width: 80px;
 }
+
 
