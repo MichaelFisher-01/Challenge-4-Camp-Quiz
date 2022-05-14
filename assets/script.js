@@ -39,9 +39,8 @@ var quizStorage = [
 
 // Main 
     displayMain();
-    while (timer > 0) {
-        var numb = random(0, (quizStorage.length));
-    }
+    var numb = random(0, (quizStorage.length));
+
 // Fucntions 
 function displayMain() {
     titleEl.textContent = "Welcome to the Code Camp Quiz!";
@@ -96,6 +95,7 @@ function nextQuestion(event){
     else {
         resultEl.textContent = "INCORRECT! The answer is: " + quizStorage[numb].answer
     }
+    numb = random(0, (quizStorage.length));
 
 clrBtns();
 startQuiz(event);
