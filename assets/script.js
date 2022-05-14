@@ -39,8 +39,9 @@ var quizStorage = [
 
 // Main 
     displayMain();
-
-
+    while (timer > 0) {
+        var numb = random(0, (quizStorage.length));
+    }
 // Fucntions 
 function displayMain() {
     titleEl.textContent = "Welcome to the Code Camp Quiz!";
@@ -50,19 +51,17 @@ function displayMain() {
 }
 
 function startQuiz (event){
+    console.log(event);
     event.preventDefault();
-    
     textEl.textContent = "----------------------";
     clrBtns();
     timerStart();
-        var numb = random(0, (quizStorage.length));
         console.log(numb);
         titleEl.textContent = quizStorage[numb].question; 
         btnGen(quizStorage[numb].option1, btnEl);
         btnGen(quizStorage[numb].option2, btnEl);
         btnGen(quizStorage[numb].option3, btnEl);
         btnGen(quizStorage[numb].option4, btnEl);
-
 }
 
 function timerStart () {
@@ -99,8 +98,7 @@ function nextQuestion(event){
     }
 
 clrBtns();
-startQuiz();
-
+startQuiz(event);
 }
 
 function clrBtns (){
