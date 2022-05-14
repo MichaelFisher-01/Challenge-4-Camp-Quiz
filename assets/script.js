@@ -37,6 +37,14 @@ var quizStorage = [
     }
 ]
 
+var timer = setInterval(function() {
+    seconds--;
+    timerEl.textContent = "Time: " + seconds;
+    if(seconds === 0) {
+        clearInterval(timer);
+    }
+} ,1000);
+
 // Main 
     displayMain();
     var numb = random(0, (quizStorage.length));
@@ -54,7 +62,6 @@ function startQuiz (event){
     event.preventDefault();
     textEl.textContent = "----------------------";
     clrBtns();
-    timerStart();
         console.log(numb);
         titleEl.textContent = quizStorage[numb].question; 
         btnGen(quizStorage[numb].option1, btnEl);
@@ -63,7 +70,7 @@ function startQuiz (event){
         btnGen(quizStorage[numb].option4, btnEl);
 }
 
-function timerStart () {
+/*function timerStart () {
     var timer = setInterval(function() {
         seconds--;
         timerEl.textContent = "Time: " + seconds;
@@ -72,7 +79,7 @@ function timerStart () {
             timer = 0;
         }
     } ,1000);
-}
+} */
 
 function random(min, max) {
     return Math.floor(Math.random() * (max - min) );
@@ -94,11 +101,21 @@ function nextQuestion(event){
     }
     else {
         resultEl.textContent = "INCORRECT! The answer is: " + quizStorage[numb].answer
+        seconds = seconds - 10;
     }
-    numb = random(0, (quizStorage.length));
-
-clrBtns();
-startQuiz(event);
+    
+    quizStorage.splice(numb,1);
+    console.log(quizStorage);
+    if(quizStorage.length != 0){  
+        numb = random(0, (quizStorage.length));
+        clrBtns();
+        startQuiz(event)
+    }
+    else {
+        clearInterval(timer);
+        clrBtns();
+        textEl.textContent = "GAME OVER!!";
+    }
 }
 
 function clrBtns (){
