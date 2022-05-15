@@ -7,43 +7,56 @@ var btnEl = document.getElementById('buttons');
 var resultEl = document.getElementById('result');
 var seconds = 60;
 timerEl.textContent = "Time: " + seconds;
+var timer;
+
 // Javascript array that contains objects of the questions and answers. If it works....
 var quizStorage = [
     {
-    question: "What is Javascript?",
-    answer:  "A programming langauge",
-    option1: "A programming language",
-    option2: "Wrong 2",
-    option3: "Wrong 3",
-    option4: "Wrong!",
+        question: "Commonly used data types DO NOT include:",
+        answer:  "alerts",
+        option1: "strings",
+        option2: "booleans",
+        option3: "alerts",
+        option4: "numbers",
     }
     ,
     {
-    question: "Another question please",
-    answer: "Right!",
-    option1: "Wrong 1",
-    option2: "Wrong 2",
-    option3: "Wrong 3",
-    option4: "Right!",
+        question: "The condition in an if / else statement is enclosed within _____",
+        answer: "parenthesis",
+        option1: "quotes",
+        option2: "curly brackets",
+        option3: "parenthesis",
+        option4: "square brackets",
     }
     ,
     {
-    question: "This is the third question",
-    answer: "Right!",
-    option1: "Wrong 1",
-    option2: "Wrong 2",
-    option3: "Wrong 3",
-    option4: "Right!",
+        question: "Arrays in Javascript can be used to store _____",
+        answer: "all of the above",
+        option1: "Numbers and Strings",
+        option2: "Other Arrays",
+        option3: "booleans",
+        option4: "all of the above",
+    }
+    ,
+    {
+        question: "A very useful tool used during development and debuggin for printing content to the debugger is: ",
+        answer: "console.log",
+        option1: "Javascript",
+        option2: "terminal/bash",
+        option3: "for loops",
+        option4: "console.log",
+    }
+    ,
+    {
+        question: "String values must be enclosed within _____ when being assigned to variables.",
+        answer:  "quotes",
+        option1: "commas",
+        option2: "quotes",
+        option3: "curley brackets",
+        option4: "parenthesis",
     }
 ]
 
-var timer = setInterval(function() {
-    seconds--;
-    timerEl.textContent = "Time: " + seconds;
-    if(seconds === 0) {
-        clearInterval(timer);
-    }
-} ,1000);
 
 // Main 
     displayMain();
@@ -60,26 +73,11 @@ function displayMain() {
 function startQuiz (event){
     console.log(event);
     event.preventDefault();
-    textEl.textContent = "----------------------";
-    clrBtns();
-        console.log(numb);
-        titleEl.textContent = quizStorage[numb].question; 
-        btnGen(quizStorage[numb].option1, btnEl);
-        btnGen(quizStorage[numb].option2, btnEl);
-        btnGen(quizStorage[numb].option3, btnEl);
-        btnGen(quizStorage[numb].option4, btnEl);
+    textEl.textContent = "";
+    startTimer();
+    nextQuestion();
+    
 }
-
-/*function timerStart () {
-    var timer = setInterval(function() {
-        seconds--;
-        timerEl.textContent = "Time: " + seconds;
-        if(seconds === 0) {
-            clearInterval(timer);
-            timer = 0;
-        }
-    } ,1000);
-} */
 
 function random(min, max) {
     return Math.floor(Math.random() * (max - min) );
@@ -92,10 +90,30 @@ function btnGen(text, location){
     location.appendChild(btn)
 }
 
+function startTimer () {
+    timer = setInterval(function() {
+        seconds--;
+        if(seconds <= 0) {
+            clearInterval(timer);
+            clrBtns();
+            gameOver();
+        }
+        timerEl.textContent = "Time: " + seconds;
+    } ,1000);}
+    
+
 function nextQuestion(event){
-    var selection = event.target;
+    titleEl.textContent = quizStorage[numb].question; 
+    btnGen(quizStorage[numb].option1, btnEl);
+    btnGen(quizStorage[numb].option2, btnEl);
+    btnGen(quizStorage[numb].option3, btnEl);
+    btnGen(quizStorage[numb].option4, btnEl);
+    
+}
+
+function checkAnswer (event) {
+    var selection = event.target; 
     var answer = selection.dataset.answer;
-    console.log(answer);
     if (quizStorage[numb].answer === answer){
         resultEl.textContent = "CORRECT! The answer is: " + quizStorage[numb].answer
     }
@@ -109,12 +127,12 @@ function nextQuestion(event){
     if(quizStorage.length != 0){  
         numb = random(0, (quizStorage.length));
         clrBtns();
-        startQuiz(event)
+        nextQuestion(); 
     }
     else {
         clearInterval(timer);
         clrBtns();
-        textEl.textContent = "GAME OVER!!";
+        gameOver();
     }
 }
 
@@ -124,8 +142,23 @@ function clrBtns (){
     }
 }
 
+function gameOver () {
+    titleEl.textContent = "All done!"
+    textEl.textContent = "Score:  " + seconds;
+    var inputEl = document.createElement('input');
+        var btn = document.createElement('button');
+        btn.innerText = "Submit";
+    resultEl.textContent = "Enter intials: ";
+    resultEl.appendChild(inputEl);
+    resultEl.appendChild(btn);
+}
+
+function scoreboard (){
+    titleEl.textContent = "SCOREBOARD";
+}
+
 
 // Event Listerns
 
 textEl.addEventListener("click", startQuiz);
-btnEl.addEventListener("click", nextQuestion);
+btnEl.addEventListener("click", checkAnswer);

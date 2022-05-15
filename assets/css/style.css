@@ -53,3 +53,13 @@
 }
 
 
+.resultStyle {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.resultStyle button {
+    min-width: 100px;
+}
