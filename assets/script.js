@@ -9,7 +9,11 @@ var seconds = 60;
 var wrongAnswer = 0
 timerEl.textContent = "Time: " + seconds;
 var timer;
-
+var savedScores = JSON.parse(localStorage.getItem('savedScores'));
+var score = {
+    intials: 'N/A',
+    score: 0,
+}
 // Array that contains objects of the questions and answers. If it works....
 var resetQuiz = [{
     question: "Commonly used data types DO NOT include:",
@@ -211,11 +215,15 @@ function gameOver () {
 
 function scoreboard (){
     titleEl.textContent = "SCOREBOARD";
+
     inputEl = document.getElementById("intials");
     intials = inputEl.value;
     console.log(intials);
-    localStorage.setItem('Score', seconds);
-    localStorage.setItem('Initials', initals);
+    score.score = score;
+    score.intials = intials;
+    localStorage.push("savedScores", JSON.stringify(score));
+    console.log(savedScores);
+    
 }
 
 
