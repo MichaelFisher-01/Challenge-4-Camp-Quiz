@@ -111,7 +111,6 @@ var quizStorage = [
 // Fucntions 
 function displayMain() {
     resultEl.textContent = "";
-    quizStorage = resetQuiz;
     clrContent(resultEl)
     titleEl.textContent = "Welcome to the Code Camp Quiz!";
     timerEl.textContent = "Time: " + seconds;
@@ -200,16 +199,23 @@ function gameOver () {
     textEl.textContent = "Score:  " + seconds;
     var inputEl = document.createElement('input');
     inputEl.id = "intials";
+    inputEl.type = text;
+
     resultEl.textContent = "Enter intials: ";
     resultEl.append(inputEl)
     btnGen("Submit", resultEl);       
     btnGen("Play Again", resultEl);
-
+    quizStorage.push.apply(quizStorage, resetQuiz);
 }
 
 
 function scoreboard (){
     titleEl.textContent = "SCOREBOARD";
+    inputEl = document.getElementById("intials");
+    intials = inputEl.value;
+    console.log(intials);
+    localStorage.setItem('Score', seconds);
+    localStorage.setItem('Initials', initals);
 }
 
 
@@ -227,7 +233,7 @@ resultEl.addEventListener("click", function(event) {
         displayMain();
     }
     else {
-        console.log("You clicked a  button");
+        console.log("This box is for typing intials to ");
     }
 
 })
