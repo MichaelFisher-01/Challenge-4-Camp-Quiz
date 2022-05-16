@@ -9,7 +9,14 @@ var seconds = 60;
 var wrongAnswer = 0
 timerEl.textContent = "Time: " + seconds;
 var timer;
-var savedScores = JSON.parse(localStorage.getItem('savedScores'));
+var score = {
+    intials: '---',
+    score: 0,
+}
+var savedScores = [];
+savedScores.push(score);
+console.log(savedScores)
+localStorage.setItem('savedScores', JSON.stringify(savedScores));
 var score = {
     intials: 'N/A',
     score: 0,
@@ -221,7 +228,7 @@ function scoreboard (){
     console.log(intials);
     score.score = score;
     score.intials = intials;
-    localStorage.push("savedScores", JSON.stringify(score));
+    savedScores.push(score);
     console.log(savedScores);
     
 }
