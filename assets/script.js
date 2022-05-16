@@ -11,6 +11,51 @@ timerEl.textContent = "Time: " + seconds;
 var timer;
 
 // Array that contains objects of the questions and answers. If it works....
+var resetQuiz = [{
+    question: "Commonly used data types DO NOT include:",
+    answer:  "alerts",
+    option1: "strings",
+    option2: "booleans",
+    option3: "alerts",
+    option4: "numbers",
+}
+,
+{
+    question: "The condition in an if / else statement is enclosed within _____",
+    answer: "parenthesis",
+    option1: "quotes",
+    option2: "curly brackets",
+    option3: "parenthesis",
+    option4: "square brackets",
+}
+,
+{
+    question: "Arrays in Javascript can be used to store _____",
+    answer: "all of the above",
+    option1: "Numbers and Strings",
+    option2: "Other Arrays",
+    option3: "booleans",
+    option4: "all of the above",
+}
+,
+{
+    question: "A very useful tool used during development and debuggin for printing content to the debugger is: ",
+    answer: "console.log",
+    option1: "Javascript",
+    option2: "terminal/bash",
+    option3: "for loops",
+    option4: "console.log",
+}
+,
+{
+    question: "String values must be enclosed within _____ when being assigned to variables.",
+    answer:  "quotes",
+    option1: "commas",
+    option2: "quotes",
+    option3: "curley brackets",
+    option4: "parenthesis",
+}
+]
 var quizStorage = [
     {
         question: "Commonly used data types DO NOT include:",
@@ -65,10 +110,14 @@ var quizStorage = [
 
 // Fucntions 
 function displayMain() {
+    resultEl.textContent = "";
+    quizStorage = resetQuiz;
+    clrContent(resultEl)
     titleEl.textContent = "Welcome to the Code Camp Quiz!";
     timerEl.textContent = "Time: " + seconds;
     textEl.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your scoretime by ten seconds!"
     btnGen("Start Quiz", textEl);
+    seconds = 60;
 }
 
 function startQuiz (event){
@@ -99,7 +148,7 @@ function startTimer () {
         wrongAnswer = 0;
         if(seconds <= 0) {
             clearInterval(timer);
-            clrBtns();
+            clrContent(btnEl);
             gameOver();
         }
         timerEl.textContent = "Time: " + seconds;
@@ -121,12 +170,12 @@ function checkAnswer (event) {
     console.log(quizStorage);
     if(quizStorage.length != 0){  
         numb = random(0, (quizStorage.length));
-        clrBtns();
+        clrContent(btnEl);
         nextQuestion(); 
     }
     else {
         clearInterval(timer);
-        clrBtns();
+        clrContent(btnEl);
         gameOver();
     }
 }
@@ -140,9 +189,9 @@ function nextQuestion(event){
     
 }
 
-function clrBtns (){
-    while (btnEl.firstChild){
-        btnEl.removeChild(btnEl.firstElementChild);
+function clrContent (area){
+    while (area.firstChild){
+        area.removeChild(area.firstElementChild);
     }
 }
 
@@ -151,19 +200,34 @@ function gameOver () {
     textEl.textContent = "Score:  " + seconds;
     var inputEl = document.createElement('input');
     inputEl.id = "intials";
-    resultEl.appendChild(inputEl);
     resultEl.textContent = "Enter intials: ";
+    resultEl.append(inputEl)
     btnGen("Submit", resultEl);       
     btnGen("Play Again", resultEl);
 
-
 }
+
+
 function scoreboard (){
     titleEl.textContent = "SCOREBOARD";
 }
+
 
 
 // Event Listerns
 
 textEl.addEventListener("click", startQuiz);
 btnEl.addEventListener("click", checkAnswer);
+resultEl.addEventListener("click", function(event) {
+    var element = event.target;
+    if (element.id === "Submit"){
+        scoreboard();
+    }
+    else if (element.id === "Play Again"){
+        displayMain();
+    }
+    else {
+        console.log("You clicked a  button");
+    }
+
+})
