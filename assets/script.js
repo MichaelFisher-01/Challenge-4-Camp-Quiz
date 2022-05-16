@@ -6,10 +6,11 @@ var timerEl = document.getElementById('timer');
 var btnEl = document.getElementById('buttons');
 var resultEl = document.getElementById('result');
 var seconds = 60;
+var wrongAnswer = 0
 timerEl.textContent = "Time: " + seconds;
 var timer;
 
-// Javascript array that contains objects of the questions and answers. If it works....
+// Array that contains objects of the questions and answers. If it works....
 var quizStorage = [
     {
         question: "Commonly used data types DO NOT include:",
@@ -87,12 +88,15 @@ function btnGen(text, location){
     var btn = document.createElement('button');
     btn.dataset.answer = text;
     btn.innerText = text;
+    btn.id = text;
     location.appendChild(btn)
 }
 
 function startTimer () {
     timer = setInterval(function() {
         seconds--;
+        seconds = seconds - wrongAnswer;
+        wrongAnswer = 0;
         if(seconds <= 0) {
             clearInterval(timer);
             clrBtns();
@@ -102,15 +106,6 @@ function startTimer () {
     } ,1000);}
     
 
-function nextQuestion(event){
-    titleEl.textContent = quizStorage[numb].question; 
-    btnGen(quizStorage[numb].option1, btnEl);
-    btnGen(quizStorage[numb].option2, btnEl);
-    btnGen(quizStorage[numb].option3, btnEl);
-    btnGen(quizStorage[numb].option4, btnEl);
-    
-}
-
 function checkAnswer (event) {
     var selection = event.target; 
     var answer = selection.dataset.answer;
@@ -119,7 +114,7 @@ function checkAnswer (event) {
     }
     else {
         resultEl.textContent = "INCORRECT! The answer is: " + quizStorage[numb].answer
-        seconds = seconds - 10;
+        wrongAnswer = wrongAnswer + 10;
     }
     
     quizStorage.splice(numb,1);
@@ -136,6 +131,15 @@ function checkAnswer (event) {
     }
 }
 
+function nextQuestion(event){
+    titleEl.textContent = quizStorage[numb].question; 
+    btnGen(quizStorage[numb].option1, btnEl);
+    btnGen(quizStorage[numb].option2, btnEl);
+    btnGen(quizStorage[numb].option3, btnEl);
+    btnGen(quizStorage[numb].option4, btnEl);
+    
+}
+
 function clrBtns (){
     while (btnEl.firstChild){
         btnEl.removeChild(btnEl.firstElementChild);
@@ -146,13 +150,14 @@ function gameOver () {
     titleEl.textContent = "All done!"
     textEl.textContent = "Score:  " + seconds;
     var inputEl = document.createElement('input');
-        var btn = document.createElement('button');
-        btn.innerText = "Submit";
-    resultEl.textContent = "Enter intials: ";
+    inputEl.id = "intials";
     resultEl.appendChild(inputEl);
-    resultEl.appendChild(btn);
-}
+    resultEl.textContent = "Enter intials: ";
+    btnGen("Submit", resultEl);       
+    btnGen("Play Again", resultEl);
 
+
+}
 function scoreboard (){
     titleEl.textContent = "SCOREBOARD";
 }
