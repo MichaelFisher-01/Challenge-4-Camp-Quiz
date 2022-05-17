@@ -9,6 +9,7 @@ var seconds = 60;
 var correct = 0;
 var score = 0;
 var wrongAnswer = 0
+var entryCount = 0
 timerEl.textContent = "Time: " + seconds;
 var timer;
 var latestScore = {
@@ -124,6 +125,7 @@ function displayMain() {
     textEl.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your scoretime by ten seconds!"
     btnGen("Start Quiz", textEl);
     seconds = 60;
+    entryCount = 0;
 }
 
 function startQuiz (event){
@@ -247,7 +249,6 @@ function scoreboard (){
 
 
 // Event Listerns
-var entryCount = 0
 textEl.addEventListener("click", startQuiz);
 btnEl.addEventListener("click", checkAnswer);
 resultEl.addEventListener("click", function(event) {
@@ -260,8 +261,8 @@ resultEl.addEventListener("click", function(event) {
         displayMain();
     }
     else if (entryCount === 1){
-        resultEl.append("You can only enter your score 1 time.")
-
+        resultEl.textContent ="You can only enter your score 1 time."
+        btnGen("Play Again", resultEl);
     }
     else {
         console.log("This box is for typing initials to ");
