@@ -6,6 +6,8 @@ var timerEl = document.getElementById('timer');
 var btnEl = document.getElementById('buttons');
 var resultEl = document.getElementById('result');
 var seconds = 60;
+var correct = 0;
+var score = 0;
 var wrongAnswer = 0
 timerEl.textContent = "Time: " + seconds;
 var timer;
@@ -163,10 +165,11 @@ function checkAnswer (event) {
     var selection = event.target; 
     var answer = selection.dataset.answer;
     if (quizStorage[numb].answer === answer){
-        resultEl.textContent = "CORRECT! The answer is: " + quizStorage[numb].answer
+        resultEl.textContent = "CORRECT!" + quizStorage[numb].answer
+        correct++
     }
     else {
-        resultEl.textContent = "INCORRECT! The answer is: " + quizStorage[numb].answer
+        resultEl.textContent = "INCORRECT!" + quizStorage[numb].answer
         wrongAnswer = wrongAnswer + 10;
     }
     
@@ -200,14 +203,15 @@ function clrContent (area){
 }
 
 function gameOver () {
+    score = seconds + (5 * correct);
     titleEl.textContent = "All done!"
-    textEl.textContent = "Score:  " + seconds;
+    textEl.textContent = "Score:  " + score;
     var inputEl = document.createElement('input');
     inputEl.id = "initials";
     inputEl.type = text;
 
     resultEl.textContent = "Enter initials: ";
-    resultEl.append(inputEl)
+    resultEl.append(inputEl);
     btnGen("Submit", resultEl);       
     btnGen("Play Again", resultEl);
     quizStorage.push.apply(quizStorage, resetQuiz);
@@ -220,18 +224,20 @@ function scoreboard (){
     titleEl.textContent = "SCOREBOARD";
     inputEl = document.getElementById("initials");
     initials = inputEl.value;
-
-    latestScore.score = seconds;
+    latestScore.score = score;
     latestScore.initials = initials;
     savedScores.push(latestScore);
-    savedScores.sort(function(a,b){return b-a});
+    savedScores.sort(function(a,b){return b.score-a.score});
     localStorage.setItem("savedScores", JSON.stringify(savedScores));
-    
+    while (savedScores.length > 7){
+        savedScores.splice(7,1)
+    }
     savedScores.forEach(function (item, index, array){
         console.log(savedScores[index].initials + " - " + savedScores[index].score);
         list = document.createElement('li');
         list.innerHTML = savedScores[index].initials + " - " + savedScores[index].score;
         textEl.appendChild(list);
+
     })
   
 }  
@@ -241,16 +247,21 @@ function scoreboard (){
 
 
 // Event Listerns
-
+var entryCount = 0
 textEl.addEventListener("click", startQuiz);
 btnEl.addEventListener("click", checkAnswer);
 resultEl.addEventListener("click", function(event) {
     var element = event.target;
-    if (element.id === "Submit"){
+    if (element.id === "Submit" && entryCount === 0){
         scoreboard();
+        entryCount = 1;
     }
     else if (element.id === "Play Again"){
         displayMain();
+    }
+    else if (entryCount === 1){
+        resultEl.append("You can only enter your score 1 time.")
+
     }
     else {
         console.log("This box is for typing initials to ");
