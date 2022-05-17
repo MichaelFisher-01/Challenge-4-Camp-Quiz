@@ -9,18 +9,12 @@ var seconds = 60;
 var wrongAnswer = 0
 timerEl.textContent = "Time: " + seconds;
 var timer;
-var score = {
-    intials: '---',
+var latestScore = {
+    initials: '---',
     score: 0,
 }
-var savedScores = [];
-savedScores.push(score);
-console.log(savedScores)
-localStorage.setItem('savedScores', JSON.stringify(savedScores));
-var score = {
-    intials: 'N/A',
-    score: 0,
-}
+var savedScores = JSON.parse(localStorage.getItem('savedScores')) || [];
+
 // Array that contains objects of the questions and answers. If it works....
 var resetQuiz = [{
     question: "Commonly used data types DO NOT include:",
@@ -209,10 +203,10 @@ function gameOver () {
     titleEl.textContent = "All done!"
     textEl.textContent = "Score:  " + seconds;
     var inputEl = document.createElement('input');
-    inputEl.id = "intials";
+    inputEl.id = "initials";
     inputEl.type = text;
 
-    resultEl.textContent = "Enter intials: ";
+    resultEl.textContent = "Enter initials: ";
     resultEl.append(inputEl)
     btnGen("Submit", resultEl);       
     btnGen("Play Again", resultEl);
@@ -221,17 +215,28 @@ function gameOver () {
 
 
 function scoreboard (){
+    textEl.textContent = "";
+    savedScores = JSON.parse(localStorage.getItem('savedScores')) || [];
     titleEl.textContent = "SCOREBOARD";
+    inputEl = document.getElementById("initials");
+    initials = inputEl.value;
 
-    inputEl = document.getElementById("intials");
-    intials = inputEl.value;
-    console.log(intials);
-    score.score = score;
-    score.intials = intials;
-    savedScores.push(score);
-    console.log(savedScores);
+    latestScore.score = seconds;
+    latestScore.initials = initials;
+    savedScores.push(latestScore);
+    savedScores.sort(function(a,b){return b-a});
+    localStorage.setItem("savedScores", JSON.stringify(savedScores));
     
-}
+    savedScores.forEach(function (item, index, array){
+        console.log(savedScores[index].initials + " - " + savedScores[index].score);
+        list = document.createElement('li');
+        list.innerHTML = savedScores[index].initials + " - " + savedScores[index].score;
+        textEl.appendChild(list);
+    })
+  
+}  
+    
+
 
 
 
@@ -248,7 +253,7 @@ resultEl.addEventListener("click", function(event) {
         displayMain();
     }
     else {
-        console.log("This box is for typing intials to ");
+        console.log("This box is for typing initials to ");
     }
 
 })
